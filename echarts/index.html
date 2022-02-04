@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
+	<title>그래프 영역</title>
+	<link rel='icon' type='image/png' href='/favicon.png'>
+	<script src="js/echarts.js"></script><!-- echarts -->
+
+	<style>
+	/* reset */
+  html {font-size:10px;}
+  body, input, select, button, textarea, h1, h2, h3, h4, h5, h6, table {color:#222; font:normal 10px/1.5 'Malgun Gothic', '맑은 고딕', dotum, '돋움', Helvetica, Apple-Gothic, Sans-serif;}
+  html, body, div, form, input, button, textarea, legend, fieldset, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, blockquote, address, p, th, td, caption,figcaption,figure { margin:0; padding:0; }
+  ol, ul, li {list-style:none; }
+  strong {font-weight:normal;}
+  img, fieldset {max-width:100%; height:auto; vertical-align:top; border:0 none; }
+  video {max-width:100%; min-width:100%; height:auto;}
+  fieldset {display: table-cell;}
+  a {color:inherit; text-decoration:none; font-family:'Malgun Gothic', '맑은 고딕', dotum, '돋움', Helvetica, Apple-Gothic, Sans-serif;}
+  .skip {width:0; height:0; visibility:hidden; font-size:0; line-height:0; position:absolute; top:0; left:0; overflow:hidden; }
+  table caption {width:0; height:0; visibility:hidden; text-indent:-9999px; font-size:0; line-height:0; }
+  table {border-collapse:collapse; border-spacing:0; }
+  header, footer, section, article, aside, nav, hgroup, details, menu, figure, figcaption {display:block; }
+
+  #container {font-size:1.6rem; margin:0 auto; width:902px;}
+	.emptyBox {width:100%; padding:50px 0; text-align:center;}
+	.ringsArea {display:flex; justify-content: center;}
+	.ringsArea .gaugeRing1 {margin-right:36px;}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<!-- 높이와 너비가 지정된 Dom 을 생성합니다 -->
+		<div class="emptyBox">콘텐츠영역</div>
+		<div id="compareBar1" style="width: 902px;height:400px;"></div>
+		<div class="emptyBox">콘텐츠영역</div>
+		<div id="singleBar" style="width: 902px;height:400px;"></div>
+		<div class="emptyBox">콘텐츠영역</div>
+		<div class="ringsArea">
+			<div id="gaugeRing1" class="gaugeRing1" style="width: 230px;height:230px;"></div>
+			<div id="gaugeRing2" style="width: 230px;height:230px;"></div>
+		</div>
+		<div class="emptyBox">콘텐츠영역</div>
+		<div id="compareBar2" style="width: 902px;height:400px;"></div>
+		<div class="emptyBox">콘텐츠영역</div>
+	</div>
+	
+	<script type="text/javascript">
+		// DOM을 준비하고 echart 객체를 만듭니다.
+		var compareBar1 = echarts.init(document.getElementById('compareBar1'));
+		var singleBar = echarts.init(document.getElementById('singleBar'));
+		var gaugeRing1 = echarts.init(document.getElementById('gaugeRing1'));
+		var gaugeRing2 = echarts.init(document.getElementById('gaugeRing2'));
+		var compareBar2 = echarts.init(document.getElementById('compareBar2'));
+
+		// 차트 속성과 데이터를 지정합니다.
+		compareBar1_option = {
+			color: ['#d5eaed', '#1ad8f5', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+			title: {
+				text: '',
+				subtext: ''
+			},
+			legend: {
+				data: ['2016년', '2017년'],
+				right: '0%',
+				bottom: '0%',
+				itemGap: 15,
+				itemHeight:10,
+				textStyle: {
+					fontSize: 12,
+					color:'#738183',
+					borderWidth: 0,
+					padding: [0, 0, 0, -8]
+				},
+				icon: 'circle'
+			},
+			tooltip: {
+				show: false,
+				trigger: ''
+			},
+			toolbox: {
+				show: false,
+			},
+			calculable: false,
+			grid: {
+				top: '5%',
+				left: '1%',
+				right: '1%',
+				bottom:'9%',
+				containLabel: true
+			},
+			xAxis: [
+				{
+					type: 'category',
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: '#738183',
+						}
+					},
+					axisTick: {
+						show: false,
+					},
+					data: [
+						{
+							value: '1월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '2월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '3월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '4월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '5월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '6월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '7월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								fontWeight: 'bold',
+								width: 13,
+								color: '#1ad8f5',
+								padding: [0, 3, 3, 3],
+								borderWidth:0,
+								shadowOffsetY: 3,
+								shadowOffsetX: 0,
+								shadowBlur: 0,
+								shadowColor: '#1ad8f5',
+								backgroundColor: '#fff'
+							}
+						},
+						{
+							value: '8월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '9월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '10월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '11월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '12월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+					]
+				}
+			],
+			yAxis: [
+				{
+					type: 'value',
+					splitNumber: 7,
+					max: function (value) {
+						return value.max + 120;
+					}
+				}
+			],
+			series: [
+				{
+					name: '2016년',
+					type: 'bar',
+					data: [
+						80, 110, 280, 370, 30, 300, 410, 330, 680, 420, 290, 370
+					],
+					label: {
+						show: true,
+						position: 'top',
+						color: '#93bdc3'
+					},
+					barWidth : 14,
+					itemStyle: {
+						color: 'auto',
+						borderRadius: 7,
+					}
+				},
+				{
+					name: '2017년',
+					type: 'bar',
+					data: [
+						80, 220, 280, 200, 280, 230, {
+							value: 590,
+							label: {
+								fontWeight: 'bold',
+								fontSize: 18,
+							}
+						}, 520, 580, 315, 410, 520
+					],
+					label: {
+						show: true,
+						position: 'top',
+						color: '#1ad8f5'
+					},
+					barWidth: 14,
+					barGap: '100%',
+					itemStyle: {
+						color: 'auto',
+						borderRadius: 7,
+					}
+				}
+			]
+	  };
+
+		singleBar_option = {
+			color: ['#d5eaed', '#6481ff', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+			title: {
+				text: '',
+				subtext: ''
+			},
+			tooltip: {
+				show: false,
+				trigger: ''
+			},
+			toolbox: {
+				show: false,
+			},
+			calculable: false,
+			grid: {
+				top: '25%',
+				left: '1%',
+				right: '1%',
+				bottom: '9%',
+				containLabel: true
+			},
+			xAxis: [
+				{
+					type: 'category',
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: '#738183',
+						}
+					},
+					axisTick: {
+						show: false,
+					},
+					data: [
+						{
+							value: '1월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '2월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '3월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '4월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '5월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '6월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '7월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								fontWeight: 'bold',
+								color: '#6481ff'
+							}
+						},
+						{
+							value: '8월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '9월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '10월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '11월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '12월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+					]
+				}
+			],
+			yAxis: [
+				{
+					show: false,
+					type: 'value',
+				}
+			],
+			series: [
+				{
+					name: '검색량',
+					type: 'bar',
+					data: [
+						80, 110, 280, 200, 280, 230, {
+							value: 690,
+							itemStyle: {
+								color: '#6481ff'
+							},
+							label: {
+								fontWeight: 'bold',
+								fontSize: 18,
+								color: '#6481ff'
+							},
+						}, 520, 590, 315, 410, 520
+					],
+					label: {
+						show: true,
+						position: 'top',
+						color: '#95b5ba'
+					},
+					barWidth: 40,
+					itemStyle: {
+						color: 'auto',
+						borderRadius: 20,
+					}
+				},
+			]
+		};
+
+		gaugeRing1_option = {
+			series: [
+				{
+					type: 'gauge',
+					radius: '100%',
+					center: ['50%', '50%'],
+					startAngle: -180,
+					endAngle: 180,
+					pointer: {
+						show: false
+					},
+					progress: {
+						show: true,
+						overlap: false,
+						roundCap: true,
+						clip: false,
+						itemStyle: {
+							color: '#6481ff',
+							borderWidth: 0,
+							// borderColor: '#464646'
+						}
+					},
+					axisLine: {
+						lineStyle: {
+							width: 4,
+						}
+					},
+					splitLine: {
+						show: false,
+						// distance: 0,
+						// length: 10
+					},
+					axisTick: {
+						show: false
+					},
+					axisLabel: {
+						show: false,
+						// distance: 50
+					},
+					data: [
+						{
+							value: 25.23,
+							name: '이미지영역',
+							title: {
+								offsetCenter: ['0%', '-15%']
+							},
+							detail: {
+								valueAnimation: true,
+								offsetCenter: ['0%', '20%']
+							}
+						},
+					],
+					title: {
+						fontSize: 14
+					},
+					detail: {
+						width: 100,
+						height: 32,
+						fontSize: 32,
+						fontFamily: 'Malgun Gothic',
+						fontWeight: 'normal',
+						color: '#6481ff',
+						// borderColor: 'auto',
+						// borderRadius: 20,
+						borderWidth: 0,
+						formatter: '{value}%'
+					}
+				}
+			]
+		};
+
+		gaugeRing2_option = {
+			series: [
+				{
+					type: 'gauge',
+					radius: '100%',
+					center: ['50%', '50%'],
+					startAngle: -90,
+					endAngle: 270,
+					pointer: {
+						show: false
+					},
+					progress: {
+						show: true,
+						overlap: false,
+						roundCap: true,
+						clip: false,
+						itemStyle: {
+							color: '#1ad8f5',
+							borderWidth: 0,
+							// borderColor: '#464646'
+						}
+					},
+					axisLine: {
+						lineStyle: {
+							width: 4,
+						}
+					},
+					splitLine: {
+						show: false,
+						// distance: 0,
+						// length: 10
+					},
+					axisTick: {
+						show: false
+					},
+					axisLabel: {
+						show: false,
+						// distance: 50
+					},
+					data: [
+						{
+							value: 75.26,
+							name: '이미지영역',
+							title: {
+								offsetCenter: ['0%', '-15%']
+							},
+							detail: {
+								valueAnimation: true,
+								offsetCenter: ['0%', '20%']
+							}
+						},
+					],
+					title: {
+						fontSize: 14
+					},
+					detail: {
+						width: 100,
+						height: 32,
+						fontSize: 32,
+						fontFamily: 'Malgun Gothic',
+						fontWeight: 'bold',
+						color: '#1ad8f5',
+						// borderColor: 'auto',
+						// borderRadius: 20,
+						borderWidth: 0,
+						formatter: '{value}%'
+					}
+				}
+			]
+		};
+		
+		compareBar2_option = {
+			color: ['#1ad8f5', '#6481ff', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+			title: {
+				text: '',
+				subtext: ''
+			},
+			legend: {
+				data: ['태그', '밸리'],
+				right: '0%',
+				bottom: '0%',
+				itemGap: 15,
+				itemHeight: 10,
+				textStyle: {
+					fontSize: 12,
+					color: '#738183',
+					borderWidth: 0,
+					padding: [0, 0, 0, -8]
+				},
+				icon: 'circle'
+			},
+			tooltip: {
+				show: false,
+				trigger: ''
+			},
+			toolbox: {
+				show: false,
+			},
+			calculable: false,
+			grid: {
+				top: '5%',
+				left: '1%',
+				right: '1%',
+				bottom: '9%',
+				containLabel: true
+			},
+			xAxis: [
+				{
+					type: 'category',
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: '#738183',
+						}
+					},
+					axisTick: {
+						show: false,
+					},
+					data: [
+						{
+							value: '1월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '2월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '3월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '4월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '5월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '6월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '7월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								fontWeight: 'bold',
+								width: 13,
+								color: '#6481ff',
+								padding: [0, 3, 3, 3],
+								borderWidth: 0,
+								shadowOffsetY: 3,
+								shadowOffsetX: 0,
+								shadowBlur: 0,
+								shadowColor: '#6481ff',
+								backgroundColor: '#fff'
+							}
+						},
+						{
+							value: '8월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '9월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								fontWeight: 'bold',
+								color: '#1ad8f5'
+							}
+						},
+						{
+							value: '10월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '11월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+						{
+							value: '12월',
+							textStyle: {
+								fontSize: 14,
+								fontFamily: 'Malgun Gothic',
+								color: '#738183'
+							}
+						},
+					]
+				}
+			],
+			yAxis: [
+				{
+					type: 'value',
+					splitNumber: 7,
+					max: function (value) {
+						return value.max + 120;
+					}
+				}
+			],
+			series: [
+				{
+					name: '태그',
+					type: 'bar',
+					data: [
+						80, 110, 280, 370, 30, 300, 410, 330, {
+							value: 680,
+							label: {
+								fontWeight: 'bold',
+								fontSize: 18,
+							}
+						}, 420, 290, 370
+					],
+					label: {
+						show: true,
+						position: 'top',
+						color: '#1ad8f5'
+					},
+					barWidth: 14,
+					itemStyle: {
+						color: 'auto',
+						borderRadius: 7,
+					}
+				},
+				{
+					name: '밸리',
+					type: 'bar',
+					data: [
+						80, 220, 280, 200, 280, 230, {
+							value: 590,
+							label: {
+								fontWeight: 'bold',
+								fontSize: 18,
+							}
+						}, 520, 580, 315, 410, 520
+					],
+					label: {
+						show: true,
+						position: 'top',
+						color: '#6481ff'
+					},
+					barWidth: 14,
+					barGap: '100%',
+					itemStyle: {
+						color: 'auto',
+						borderRadius: 7,
+					}
+				}
+			]
+		};
+
+		// 위에서 설정한 속성을 차트에 반영합니다.
+		compareBar1.setOption(compareBar1_option);
+		singleBar.setOption(singleBar_option);
+		gaugeRing1.setOption(gaugeRing1_option);
+		gaugeRing2.setOption(gaugeRing2_option);
+		compareBar2.setOption(compareBar2_option);
+	</script>
+</body>
+</html>
